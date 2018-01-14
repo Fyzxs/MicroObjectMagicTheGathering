@@ -10,7 +10,20 @@ namespace MicroObjectMagicTheGathering
         {
             new EventBus();
         }
+
+        [TestMethod, TestCategory("unit")]
+        public void ShouldImplementInterface()
+        {
+            //Arrange
+            IEventBus eventBus = new EventBus();
+
+            //Act
+
+            //Assert
+        }
     }
 
-    public class EventBus { }
+    public interface IEventBus { }
+
+    public class EventBus : IEventBus { }
 }
