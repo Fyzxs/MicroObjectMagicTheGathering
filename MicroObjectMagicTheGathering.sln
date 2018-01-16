@@ -3,7 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroObjectMagicTheGathering", "MicroObjectMagicTheGathering\MicroObjectMagicTheGathering.csproj", "{878FD17F-C65F-4454-A252-12B8A17717B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{2C0D2808-55CF-4F86-96D0-61FDC4584FF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryTests", "LibraryTests\LibraryTests.csproj", "{F27FB89B-0445-45CB-9AF5-A757A81C2C5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleEventBusClient", "ConsoleEventBusClient\ConsoleEventBusClient.csproj", "{93AA443E-BEC4-4754-BC4C-30F12C665E57}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2C0D2808-55CF-4F86-96D0-61FDC4584FF2} = {2C0D2808-55CF-4F86-96D0-61FDC4584FF2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleEventBusServer", "ConsoleEventBusServer\ConsoleEventBusServer.csproj", "{DFBDB5B0-436A-46DC-8E4F-B21CA4223079}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +20,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{878FD17F-C65F-4454-A252-12B8A17717B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{878FD17F-C65F-4454-A252-12B8A17717B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{878FD17F-C65F-4454-A252-12B8A17717B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{878FD17F-C65F-4454-A252-12B8A17717B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C0D2808-55CF-4F86-96D0-61FDC4584FF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C0D2808-55CF-4F86-96D0-61FDC4584FF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C0D2808-55CF-4F86-96D0-61FDC4584FF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C0D2808-55CF-4F86-96D0-61FDC4584FF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F27FB89B-0445-45CB-9AF5-A757A81C2C5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F27FB89B-0445-45CB-9AF5-A757A81C2C5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F27FB89B-0445-45CB-9AF5-A757A81C2C5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F27FB89B-0445-45CB-9AF5-A757A81C2C5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93AA443E-BEC4-4754-BC4C-30F12C665E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93AA443E-BEC4-4754-BC4C-30F12C665E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93AA443E-BEC4-4754-BC4C-30F12C665E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93AA443E-BEC4-4754-BC4C-30F12C665E57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFBDB5B0-436A-46DC-8E4F-B21CA4223079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFBDB5B0-436A-46DC-8E4F-B21CA4223079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFBDB5B0-436A-46DC-8E4F-B21CA4223079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFBDB5B0-436A-46DC-8E4F-B21CA4223079}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
