@@ -1,27 +1,19 @@
 ﻿using Library.Eventing;
 using LibraryTests.Fakes.Builders;
 using System;
-using System.Threading.Tasks;
 
 namespace LibraryTests.Fakes
 {
     public class FakeListener : IListener
     {
-
         public class Builder
         {
-            private readonly BuilderItemAction<IEventMessage> _updateItem = new BuilderItemAction<IEventMessage>("FakeListener#Update");
-            private readonly BuilderItemTask _attachedItem = new BuilderItemTask("FakeCLASS#Attached");
+            private readonly BuilderItemAction<IEventMessage> _notifyItem = new BuilderItemAction<IEventMessage>("FakeListener#Update");
 
-            public Builder Attached()
+            public Builder Notify() => Notify(() => { });
+            public Builder Notify(params Action[] actions)
             {
-                _attachedItem.UpdateInvocation();
-                return this;
-            }
-            public Builder Update() => Update(() => { });
-            public Builder Update(params Action[] actions)
-            {
-                _updateItem.UpdateInvocation(actions);
+                _notifyItem.UpdateInvocation(actions);
                 return this;
             }
 
@@ -29,23 +21,20 @@ namespace LibraryTests.Fakes
             {
                 return new FakeListener
                 {
-                    _update = _updateItem,
-                    _attached = _attachedItem
+                    _notify = _notifyItem,
                 };
             }
         }
 
-        private BuilderItemAction<IEventMessage> _update;
-        public BuilderItemTask _attached;
+        private BuilderItemAction<IEventMessage> _notify;
 
         private FakeListener() { }
 
 
-        public Task Update(IEventMessage eventMessage) => Task.Run(() => _update.Invoke(eventMessage));
-        public void Attached() => _attached.Invoke();
+        public void Notify(IEventMessage eventMessage) => _notify.Invoke(eventMessage);
 
-        public void AssertUpdateInvokedWith(IEventMessage expected) => _update.AssertInvokedWith(expected);
+        public void AssertNotifyInvokedWith(IEventMessage expected) => _notify.AssertInvokedWith(expected);
 
-        public void AssertUpdateInvokedCountMatches(int count) => _update.InvokedCountMatches(count);
+        public void AssertNotifyInvokedCountMatches(int count) => _notify.InvokedCountMatches(count);
     }
 }

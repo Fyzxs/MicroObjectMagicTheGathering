@@ -1,8 +1,6 @@
-﻿using FluentAssertions;
-using Library.Eventing;
+﻿using Library.Eventing;
 using LibraryTests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
 
 namespace LibraryTests.Eventing
 {
@@ -10,64 +8,55 @@ namespace LibraryTests.Eventing
     public class ListenerCollectionTests
     {
         [TestMethod, TestCategory("unit")]
-        public async Task ShouldAdd()
+        public void ShouldAdd()
         {
             //Arrange
+            FakeEventMessage fakeEventMessage = new FakeEventMessage.Builder().Build();
             ListenerCollection subject = new ListenerCollection();
-            FakeListener fakeListener = new FakeListener.Builder().Update().Build();
+            FakeListener fakeListener = new FakeListener.Builder().Notify().Build();
 
             //Act
             subject.Add(fakeListener);
 
             //Assert
-            ( await subject.NotifyAll(null) ).Length.Should().Be(1);
+            subject.NotifyAll(fakeEventMessage);
+            fakeListener.AssertNotifyInvokedWith(fakeEventMessage);
         }
 
         [TestMethod, TestCategory("unit")]
-        public async Task ShouldAddMultiple()
+        public void ShouldAddMultiple()
         {
             //Arrange
+            FakeEventMessage fakeEventMessage = new FakeEventMessage.Builder().Build();
             ListenerCollection subject = new ListenerCollection();
-            FakeListener fakeListener = new FakeListener.Builder().Update().Build();
-            FakeListener fakeListener2 = new FakeListener.Builder().Update().Build();
+            FakeListener fakeListener = new FakeListener.Builder().Notify().Build();
+            FakeListener fakeListener2 = new FakeListener.Builder().Notify().Build();
 
             //Act
             subject.Add(fakeListener);
             subject.Add(fakeListener2);
 
             //Assert
-            ( await subject.NotifyAll(null) ).Length.Should().Be(2);
+            subject.NotifyAll(fakeEventMessage);
+            fakeListener.AssertNotifyInvokedWith(fakeEventMessage);
+            fakeListener2.AssertNotifyInvokedWith(fakeEventMessage);
         }
+
         [TestMethod, TestCategory("unit")]
-        public async Task ShouldNotifyAsTask()
+        public void ShouldRemove()
         {
             //Arrange
-            ListenerCollection subject = new ListenerCollection();
-            FakeListener fakeListener = new FakeListener.Builder().Update().Build();
             FakeEventMessage fakeEventMessage = new FakeEventMessage.Builder().Build();
-            subject.Add(fakeListener);
-
-            //Act
-            Task[] actual = await subject.NotifyAll(fakeEventMessage);
-
-            //Assert
-            await actual[0];
-            fakeListener.AssertUpdateInvokedWith(fakeEventMessage);
-        }
-
-        [TestMethod, TestCategory("unit")]
-        public async Task ShouldRemove()
-        {
-            //Arrange
             ListenerCollection subject = new ListenerCollection();
-            FakeListener fakeListener = new FakeListener.Builder().Update().Build();
+            FakeListener fakeListener = new FakeListener.Builder().Notify().Build();
             subject.Add(fakeListener);
 
             //Act
             subject.Remove(fakeListener);
 
             //Assert
-            ( await subject.NotifyAll(null) ).Length.Should().Be(0);
+            subject.NotifyAll(fakeEventMessage);
+            fakeListener.AssertNotifyInvokedCountMatches(0);
         }
     }
 }

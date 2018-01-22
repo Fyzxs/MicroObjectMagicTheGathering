@@ -58,8 +58,6 @@
   <ItemGroup>
     <Compile Include="Bytes\BytesOfTests.cs" />
     <Compile Include="Eventing\EventBusTests.cs" />
-    <Compile Include="Eventing\ListenerCollectionTests.cs" />
-    <Compile Include="Eventing\Tcp\TcpClientListenerTests.cs" />
     <Compile Include="Fakes\Builders\BuilderItem.cs" />
     <Compile Include="Fakes\Builders\BuilderItemAction.cs" />
     <Compile Include="Fakes\Builders\BuilderItemFunc.cs" />
@@ -69,10 +67,8 @@
     <Compile Include="Fakes\FakeEventBus.cs" />
     <Compile Include="Fakes\FakeEventMessage.cs" />
     <Compile Include="Fakes\FakeListener.cs" />
-    <Compile Include="Fakes\FakeListenerCollection.cs" />
     <Compile Include="Fakes\FakeSemaphoreSlimBookEnd.cs" />
     <Compile Include="Fakes\FakeSetBookEnd.cs" />
-    <Compile Include="Fakes\FakeTcpClientBookEnd.cs" />
     <Compile Include="Threading\BlockingSetBookEndTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

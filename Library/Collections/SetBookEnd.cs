@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Library.Collections
@@ -12,7 +11,7 @@ namespace Library.Collections
 
         public SetBookEnd(ISet<T> set) => _set = set;
 
-        public Task<IEnumerable<TResult>> Select<TResult>(Func<T, TResult> selector) => Task.Run(() => _set.Select(selector));
+        public Task ForEach(Action<T> selector) => Task.Run(() => { foreach (T t in _set) selector(t); });
 
         public Task Add(T t) => Task.Run(() => _set.Add(t));
 

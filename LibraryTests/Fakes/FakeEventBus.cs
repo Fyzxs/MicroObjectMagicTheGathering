@@ -1,6 +1,5 @@
 ﻿using Library.Eventing;
 using LibraryTests.Fakes.Builders;
-using System.Threading.Tasks;
 
 namespace LibraryTests.Fakes
 {
@@ -46,7 +45,7 @@ namespace LibraryTests.Fakes
         private FakeEventBus() { }
         public void Attach(IListener listener) => _attach.Invoke(listener);
 
-        public Task Notify(IEventMessage eventMessage) => Task.Run(() => _notify.Invoke(eventMessage));
+        public void Notify(IEventMessage eventMessage) => _notify.Invoke(eventMessage);
 
         public void Detach(IListener listener) => _detach.Invoke(listener);
     }

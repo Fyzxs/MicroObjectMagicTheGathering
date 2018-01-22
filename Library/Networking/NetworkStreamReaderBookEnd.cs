@@ -1,8 +1,7 @@
 ﻿using Library.Bytes;
+using Library.Threading;
 using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Threading.Tasks;
-using Library.Threading;
 
 namespace Library.Networking
 {
@@ -16,18 +15,18 @@ namespace Library.Networking
 
         public IBytes ReadToEnd()
         {
-                lock (_stream)
+            lock (_stream)
+            {
+
+                List<byte> fullBytes = new List<byte>();
+                int byteValue = -1;
+                while (( byteValue = _stream.ReadByte() ) != Terminator)
                 {
-
-                    List<byte> fullBytes = new List<byte>();
-                    int byteValue = -1;
-                    while (( byteValue = _stream.ReadByte() ) != Terminator)
-                    {
-                        fullBytes.Add((byte) byteValue);
-                    }
-
-                    return new BytesOf(fullBytes.ToArray());
+                    fullBytes.Add((byte) byteValue);
                 }
+
+                return new BytesOf(fullBytes.ToArray());
+            }
 
         }
     }

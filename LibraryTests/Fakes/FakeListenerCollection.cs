@@ -34,8 +34,9 @@ namespace LibraryTests.Fakes
         private BuilderItemFunc<Task[]> _notifyAll;
         private BuilderItemAction<IListener> _add;
         private FakeListenerCollection() { }
-        public void Add(IListener listener) => _add.Invoke(listener);
+        public Task Add(IListener listener) => Task.Run(() => _add.Invoke(listener));
 
-        public Task<Task[]> NotifyAll(IEventMessage eventMessage) => Task.FromResult(_notifyAll.Invoke(eventMessage));
+        public Task NotifyAll(IEventMessage eventMessage) => Task.Run(() => _notifyAll.Invoke(eventMessage));
+
     }
 }

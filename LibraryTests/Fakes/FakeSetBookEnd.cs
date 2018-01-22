@@ -1,7 +1,6 @@
 ﻿using Library.Collections;
 using LibraryTests.Fakes.Builders;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LibraryTests.Fakes
@@ -11,7 +10,7 @@ namespace LibraryTests.Fakes
         public class Builder
         {
             private readonly BuilderItemAction<T> _addItem = new BuilderItemAction<T>("FakeSetBookEnd#Add");
-            private readonly BuilderItemFunc<IEnumerable<T>> _selectItem = new BuilderItemFunc<IEnumerable<T>>("FakeSetBookEnd#Select");
+            private readonly BuilderItemAction<Action<T>> _forEachItem = new BuilderItemAction<Action<T>>("FakeSetBookEnd#ForEach");
             private readonly BuilderItemAction<T> _removeItem = new BuilderItemAction<T>("FakeSetBookEnd#Remove");
 
 
@@ -23,10 +22,10 @@ namespace LibraryTests.Fakes
                 return this;
             }
 
-            public Builder Select(IEnumerable<T> expected) => Select(() => expected);
-            public Builder Select(params Func<IEnumerable<T>>[] funcs)
+            public Builder ForEach() => ForEach(() => { });
+            public Builder ForEach(params Action[] action)
             {
-                _selectItem.UpdateInvocation(funcs);
+                _forEachItem.UpdateInvocation(action);
                 return this;
             }
 
@@ -40,7 +39,7 @@ namespace LibraryTests.Fakes
             {
                 return new FakeSetBookEnd<T>
                 {
-                    _select = _selectItem,
+                    _forEach = _forEachItem,
                     _add = _addItem,
                     _remove = _removeItem
                 };
@@ -48,11 +47,12 @@ namespace LibraryTests.Fakes
         }
 
         private BuilderItemAction<T> _add;
-        private BuilderItemFunc<IEnumerable<T>> _select;
+        private BuilderItemAction<Action<T>> _forEach;
         private BuilderItemAction<T> _remove;
         private FakeSetBookEnd() { }
 
-        public Task<IEnumerable<TResult>> Select<TResult>(Func<T, TResult> selector) => Task.FromResult(_select.Invoke(selector) as IEnumerable<TResult>);
+
+        public Task ForEach(Action<T> selector) => Task.Run(() => _forEach.Invoke(selector));
 
         public Task Add(T t) => Task.Run(() => _add.Invoke(t));
 
@@ -62,7 +62,7 @@ namespace LibraryTests.Fakes
 
         public void AssertRemoveInvoked() => _remove.AssertInvoked();
 
-        public void AssertSelectInvoked() => _select.AssertInvoked();
+        public void AssertForEachInvoked() => _forEach.AssertInvoked();
 
         public void AssertRemoveInvokedWith(T expected) => _remove.AssertInvokedWith(expected);
     }

@@ -24,5 +24,10 @@ namespace LibraryTests.Fakes
         private BuilderItemFunc<IBytes> _bytes;
         private FakeEventMessage() { }
         public IBytes Bytes() => _bytes.Invoke();
+
+        byte[] IBytes.Bytes()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

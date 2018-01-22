@@ -1,6 +1,5 @@
 ﻿using Library.Collections;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Library.Threading
@@ -18,12 +17,12 @@ namespace Library.Threading
             _semaphore = semaphore;
         }
 
-        public async Task<IEnumerable<TResult>> Select<TResult>(Func<T, TResult> selector)
+        public async Task ForEach(Action<T> action)
         {
             try
             {
                 await _semaphore.Wait();
-                return await _origin.Select(selector);
+                await _origin.ForEach(action);
             } finally
             {
                 _semaphore.Release();

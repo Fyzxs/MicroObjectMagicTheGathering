@@ -2,8 +2,9 @@
 
 namespace Library.Eventing
 {
-    public interface IEventMessage
+    public interface IEventMessage : IBytes
     {
-        IBytes Bytes();
+
+        //More will be coming
     }
 }

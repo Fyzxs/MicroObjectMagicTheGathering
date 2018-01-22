@@ -3,7 +3,6 @@ using Library.Threading;
 using LibraryTests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LibraryTests.Threading
@@ -82,20 +81,20 @@ namespace LibraryTests.Threading
         }
 
         [TestMethod, TestCategory("unit")]
-        public async Task ShouldBlockForSelect()
+        public async Task ShouldBlockForForEach()
         {
             //Arrange
             FakeSemaphoreSlimBookEnd fakeSemaphoreSlimBookEnd = new FakeSemaphoreSlimBookEnd.Builder().Wait().Release().Build();
-            FakeSetBookEnd<object> fakeSetBookEnd = new FakeSetBookEnd<object>.Builder().Select(new List<object>()).Build();
+            FakeSetBookEnd<object> fakeSetBookEnd = new FakeSetBookEnd<object>.Builder().ForEach().Build();
             BlockingSetBookEnd<object> subject = new BlockingSetBookEnd<object>(fakeSetBookEnd, fakeSemaphoreSlimBookEnd);
 
             //Act
-            await subject.Select(e => new object());
+            await subject.ForEach(e => { });
 
             //Assert
             fakeSemaphoreSlimBookEnd.AssertWaitInvoked();
             fakeSemaphoreSlimBookEnd.AssertReleaseInvoked();
-            fakeSetBookEnd.AssertSelectInvoked();
+            fakeSetBookEnd.AssertForEachInvoked();
         }
 
         [TestMethod, TestCategory("unit")]
@@ -103,17 +102,17 @@ namespace LibraryTests.Threading
         {
             //Arrange
             FakeSemaphoreSlimBookEnd fakeSemaphoreSlimBookEnd = new FakeSemaphoreSlimBookEnd.Builder().Wait().Release().Build();
-            FakeSetBookEnd<object> fakeSetBookEnd = new FakeSetBookEnd<object>.Builder().Select(() => throw new Exception()).Build();
+            FakeSetBookEnd<object> fakeSetBookEnd = new FakeSetBookEnd<object>.Builder().ForEach(() => throw new Exception()).Build();
             BlockingSetBookEnd<object> subject = new BlockingSetBookEnd<object>(fakeSetBookEnd, fakeSemaphoreSlimBookEnd);
 
             //Act
-            Func<Task> func = async () => await subject.Select<object>(null);
+            Func<Task> func = () => subject.ForEach(null);
 
             //Assert
             func.ShouldThrow<Exception>();
             fakeSemaphoreSlimBookEnd.AssertWaitInvoked();
             fakeSemaphoreSlimBookEnd.AssertReleaseInvoked();
-            fakeSetBookEnd.AssertSelectInvoked();
+            fakeSetBookEnd.AssertForEachInvoked();
         }
     }
 }

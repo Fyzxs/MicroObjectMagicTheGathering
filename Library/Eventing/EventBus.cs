@@ -1,33 +1,22 @@
-﻿using Library.Collections;
-using Library.Threading;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 
 namespace Library.Eventing
 {
     public class EventBus : IEventBus
     {
-        private readonly ISetBookEnd<IListener> _listeners;
-
-        public EventBus() : this(new BlockingSetBookEnd<IListener>()) { }
-
-        public EventBus(ISetBookEnd<IListener> blockingSetBookEnd) => _listeners = blockingSetBookEnd;
+        private readonly ConcurrentBag<IListener> _bag = new ConcurrentBag<IListener>();
 
         public void Attach(IListener listener)
         {
-            _listeners.Add(listener);
-            listener.Attached();
+            _bag.Add(listener);
         }
 
-        public async Task Notify(IEventMessage eventMessage)
+        public void Notify(IEventMessage eventMessage)
         {
-            Console.WriteLine("Notifying");
-            IEnumerable<Task> enumerable = await _listeners.Select(listener => listener.Update(eventMessage));
-            Task.WaitAll(enumerable.ToArray());
+            foreach (IListener listener in _bag)
+            {
+                listener.Notify(eventMessage);
+            }
         }
-
-        public void Detach(IListener listener) => _listeners.Remove(listener);
     }
 }
